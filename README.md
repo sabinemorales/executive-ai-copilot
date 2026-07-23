@@ -1,2 +1,2 @@
-# executive-ai-assistant
-An AI-powered executive assistant for decision support, research, planning, and business operations.
+# executive-ai-copilot
+An AI-powered executive copilot for decision support, research, planning, and business operations.
