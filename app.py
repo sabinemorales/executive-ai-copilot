@@ -5,7 +5,7 @@ Executive AI Copilot - main dashboard application.
 
 import streamlit as st
 import pandas as pd
-from ai_engine import generate_executive_briefing
+from ai_engine import generate_executive_briefing, generate_root_cause_analysis, generate_recommended_actions
 
 st.set_page_config(page_title="Executive AI Copilot", layout="wide")
 
@@ -28,6 +28,24 @@ if st.button("Generate Today's Briefing"):
             sales_df, finance_df, cs_df, product_df, marketing_df, ops_df
         )
     st.markdown(briefing)
+
+# --- Root Cause Analysis (AI-generated) ---
+st.header("Root Cause Analysis")
+if st.button("Investigate Anomalies"):
+    with st.spinner("Digging into the data..."):
+        root_cause = generate_root_cause_analysis(
+            sales_df, finance_df, cs_df, product_df, marketing_df, ops_df
+        )
+    st.markdown(root_cause)
+
+# --- Recommended Actions (AI-generated) ---
+st.header("Recommended Actions")
+if st.button("Get This Week's Priorities"):
+    with st.spinner("Prioritizing..."):
+        actions = generate_recommended_actions(
+            sales_df, finance_df, cs_df, product_df, marketing_df, ops_df
+        )
+    st.markdown(actions)
 
 # Tabs let us organize 6 domains without one giant scrolling page
 tab_sales, tab_finance, tab_cs, tab_product, tab_marketing, tab_ops = st.tabs(
@@ -84,3 +102,29 @@ with tab_product:
 
     st.subheader("Support Tickets by Feature Over Time")
     tickets_by_feature = product_df.pivot_table(index="month", columns="feature", values="support_tickets")
+    st.line_chart(tickets_by_feature)
+
+with tab_marketing:
+    st.header("Marketing KPIs")
+    total_spend = marketing_df["spend"].sum()
+    avg_roi = marketing_df["roi"].mean()
+
+    col1, col2 = st.columns(2)
+    col1.metric("Total Marketing Spend (YTD)", f"${total_spend:,.0f}")
+    col2.metric("Avg ROI", f"{avg_roi:.2f}x")
+
+    st.subheader("ROI by Channel Over Time")
+    roi_by_channel = marketing_df.pivot_table(index="month", columns="channel", values="roi")
+    st.line_chart(roi_by_channel)
+
+with tab_ops:
+    st.header("Operations KPIs")
+    avg_delivery = ops_df["on_time_delivery_pct"].mean()
+    avg_shipping = ops_df["avg_shipping_days"].mean()
+
+    col1, col2 = st.columns(2)
+    col1.metric("Avg On-Time Delivery", f"{avg_delivery:.1f}%")
+    col2.metric("Avg Shipping Days", f"{avg_shipping:.1f}")
+
+    st.subheader("On-Time Delivery Rate Over Time")
+    st.line_chart(ops_df.set_index("month")["on_time_delivery_pct"])
