@@ -154,3 +154,52 @@ Keep the whole response under 200 words. Be direct and specific, not diplomatic.
         messages=[{"role": "user", "content": prompt}],
     )
     return response.content[0].text
+
+
+def chat_with_data(sales_df, finance_df, cs_df, product_df, marketing_df, ops_df, chat_history, user_question):
+    """
+    Answers an arbitrary question grounded in the six datasets, using
+    prior conversation turns so follow-up questions make sense.
+    """
+    sales_summary = sales_df.groupby("month")["revenue"].sum().to_string()
+    sales_by_region = sales_df.groupby(["month", "region"])["revenue"].sum().to_string()
+    finance_summary = finance_df.groupby("month")["expense"].sum().to_string()
+    churn_summary = cs_df.groupby("month")["churn_rate_pct"].mean().to_string()
+    tickets_summary = product_df.groupby("month")["support_tickets"].sum().to_string()
+    roi_summary = marketing_df.groupby("month")["roi"].mean().to_string()
+    delivery_summary = ops_df.groupby("month")["on_time_delivery_pct"].mean().to_string()
+
+    system_prompt = f"""You are a helpful business analyst assistant with access to this company's data across six domains for the past 12 months.
+
+SALES REVENUE BY MONTH:
+{sales_summary}
+
+SALES REVENUE BY MONTH AND REGION:
+{sales_by_region}
+
+FINANCE - TOTAL EXPENSES BY MONTH:
+{finance_summary}
+
+CUSTOMER SUCCESS - AVG CHURN RATE (%) BY MONTH:
+{churn_summary}
+
+PRODUCT - TOTAL SUPPORT TICKETS BY MONTH:
+{tickets_summary}
+
+MARKETING - AVG ROI BY MONTH:
+{roi_summary}
+
+OPERATIONS - AVG ON-TIME DELIVERY (%) BY MONTH:
+{delivery_summary}
+
+Answer the user's questions using only this data. If they ask about something not present in this data (like a specific metric that doesn't exist here), say clearly that it isn't available in the current dataset, rather than guessing or making up numbers. Be direct and concise."""
+
+    messages = chat_history + [{"role": "user", "content": user_question}]
+
+    response = client.messages.create(
+        model="claude-sonnet-4-5",
+        max_tokens=600,
+        system=system_prompt,
+        messages=messages,
+    )
+    return response.content[0].text

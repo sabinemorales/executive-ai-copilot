@@ -5,7 +5,7 @@ Executive AI Copilot - main dashboard application.
 
 import streamlit as st
 import pandas as pd
-from ai_engine import generate_executive_briefing, generate_root_cause_analysis, generate_recommended_actions
+from ai_engine import generate_executive_briefing, generate_root_cause_analysis, generate_recommended_actions, chat_with_data
 
 st.set_page_config(page_title="Executive AI Copilot", layout="wide")
 
@@ -46,6 +46,34 @@ if st.button("Get This Week's Priorities"):
             sales_df, finance_df, cs_df, product_df, marketing_df, ops_df
         )
     st.markdown(actions)
+
+# --- Interactive Executive Chat ---
+st.header("Ask a Question")
+
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
+for msg in st.session_state.chat_history:
+    with st.chat_message(msg["role"]):
+        st.markdown(msg["content"])
+
+user_question = st.chat_input("Ask anything about this data...")
+
+if user_question:
+    with st.chat_message("user"):
+        st.markdown(user_question)
+
+    with st.spinner("Thinking..."):
+        answer = chat_with_data(
+            sales_df, finance_df, cs_df, product_df, marketing_df, ops_df,
+            st.session_state.chat_history, user_question
+        )
+
+    with st.chat_message("assistant"):
+        st.markdown(answer)
+
+    st.session_state.chat_history.append({"role": "user", "content": user_question})
+    st.session_state.chat_history.append({"role": "assistant", "content": answer})
 
 # Tabs let us organize 6 domains without one giant scrolling page
 tab_sales, tab_finance, tab_cs, tab_product, tab_marketing, tab_ops = st.tabs(
