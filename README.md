@@ -1,5 +1,7 @@
 # Executive AI Copilot
 
+🔗 **[Live Demo](https://executive-ai-copilot-4dvnn46rjy7hmdfp5wbmt5.streamlit.app)**
+
 **An AI-powered command center for business performance** — turning raw data across six business domains into an executive briefing, root cause analysis, recommended actions, and a conversational assistant, in seconds instead of hours.
 
 ![Executive AI Copilot dashboard](docs/screenshot.png)
@@ -16,15 +18,15 @@ Most executives spend hours every week having someone manually pull, reconcile, 
 
 ## Why this matters
 
-This isn't a chatbot bolted onto a spreadsheet. Every AI feature follows a deliberate pattern: **pre-computed data summaries in, structured reasoning out** — keeping prompts small, fast, and inexpensive, while ensuring the AI reasons over real numbers rather than guessing. The chat feature is explicitly instructed to say "not available in this dataset" rather than inventing an answer when asked about something the data doesn't contain — a small design choice that matters a great deal once real, messy company data replaces the synthetic demo data.
+This isn't a chatbot bolted onto a spreadsheet. Every AI feature follows a deliberate pattern: pre-computed data summaries in, structured reasoning out — keeping prompts small, fast, and inexpensive, while ensuring the AI reasons over real numbers rather than guessing. The chat feature is explicitly instructed to say "not available in this dataset" rather than inventing an answer when asked about something the data doesn't contain — a small design choice that matters a great deal once real, messy company data replaces the synthetic demo data.
 
 ## Tech stack
 
 | Layer | Tool |
 |---|---|
-| UI / dashboard | [Streamlit](https://streamlit.io) |
+| UI / dashboard | Streamlit |
 | Data handling | pandas |
-| AI reasoning | [Claude](https://www.anthropic.com) via the Anthropic API |
+| AI reasoning | Claude via the Anthropic API |
 | Charts | Streamlit native charting |
 | Secrets management | python-dotenv |
 
@@ -56,7 +58,7 @@ Run the app:
 
     streamlit run app.py
 
-Get an API key at [console.anthropic.com](https://console.anthropic.com/settings/keys).
+Get an API key at console.anthropic.com/settings/keys.
 
 ## Project structure
 
@@ -78,7 +80,7 @@ This project was built as a hands-on learning exercise covering Python fundament
 
 ## Roadmap
 
-- [ ] Deploy live on Streamlit Community Cloud
+- [x] Deploy live on Streamlit Community Cloud
 - [ ] Support uploading real company CSVs in place of synthetic data
 - [ ] Add data validation and error handling for missing/malformed files
 - [ ] Explore a Microsoft-stack equivalent (Fabric/OneLake + Copilot Studio) for enterprise deployment
