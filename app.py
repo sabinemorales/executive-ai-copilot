@@ -23,11 +23,14 @@ if not os.getenv("ANTHROPIC_API_KEY"):
     st.stop()
 
 if not os.path.exists("data/sales.csv"):
-    st.error(
-        "No data found. Run `python3 generate_data.py` in your terminal first, "
-        "then refresh this page."
-    )
-    st.stop()
+    with st.spinner("First run detected — generating demo data..."):
+        import generate_data
+        generate_data.generate_sales_data()
+        generate_data.generate_finance_data()
+        generate_data.generate_customer_success_data()
+        generate_data.generate_product_data()
+        generate_data.generate_marketing_data()
+        generate_data.generate_operations_data()
 
 # Load all six datasets once, at the top
 sales_df = pd.read_csv("data/sales.csv")
