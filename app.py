@@ -3,6 +3,7 @@ app.py
 Executive AI Copilot - main dashboard application.
 """
 
+import os
 import streamlit as st
 import pandas as pd
 from ai_engine import generate_executive_briefing, generate_root_cause_analysis, generate_recommended_actions, chat_with_data
@@ -11,6 +12,22 @@ st.set_page_config(page_title="Executive AI Copilot", layout="wide")
 
 st.title("Executive AI Copilot")
 st.caption("Your AI-powered command center for business performance")
+
+# --- Startup checks: fail with a helpful message, not a raw traceback ---
+if not os.getenv("ANTHROPIC_API_KEY"):
+    st.error(
+        "No Anthropic API key found. Create a `.env` file in this project's "
+        "root folder containing:\n\n`ANTHROPIC_API_KEY=your_key_here`\n\n"
+        "Get a key at https://console.anthropic.com/settings/keys"
+    )
+    st.stop()
+
+if not os.path.exists("data/sales.csv"):
+    st.error(
+        "No data found. Run `python3 generate_data.py` in your terminal first, "
+        "then refresh this page."
+    )
+    st.stop()
 
 # Load all six datasets once, at the top
 sales_df = pd.read_csv("data/sales.csv")
