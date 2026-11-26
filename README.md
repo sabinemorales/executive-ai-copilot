@@ -4,7 +4,11 @@
 
 **An AI-powered command center for business performance** — turning raw data across six business domains into an executive briefing, root cause analysis, recommended actions, and a conversational assistant, in seconds instead of hours.
 
-![Executive AI Copilot dashboard](docs/screenshot.png)
+Dashboard views from the synthetic demo data produced by `generate_data.py`.
+
+![Sales KPIs](screenshots/sales_kpis.png)
+
+![Customer success churn by region](screenshots/customer_success.png)
 
 ## What it does
 
@@ -68,6 +72,8 @@ Get an API key at console.anthropic.com/settings/keys.
     ├── generate_data.py    # Synthetic data generator for all 6 domains
     ├── data/               # Generated CSVs (not committed — reproducible via generate_data.py)
     ├── requirements.txt
+    ├── screenshots/        # Dashboard captures from the synthetic demo data
+    ├── LICENSE
     └── .env                # API key (not committed)
 
 ## The data
@@ -87,4 +93,4 @@ This project was built as a hands-on learning exercise covering Python fundament
 
 ## License
 
-MIT
+[MIT](LICENSE) — Copyright (c) 2026 Sabine Morales
